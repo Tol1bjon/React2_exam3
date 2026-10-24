@@ -9,7 +9,7 @@ interface CloseDebtModalProps {
     onConfirm?: (debt?: any) => void;
 }
 
-const CloseDebtModal = ({ isOpen, onClose, debt, onConfirm }: CloseDebtModalProps) => {
+const CloseDebtModal = ({ isOpen, onClose, debt }: CloseDebtModalProps) => {
     const closeDebt = useUser((state: any) => state.closeDebt)
 
     const { t } = useTranslation();

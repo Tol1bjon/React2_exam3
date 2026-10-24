@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { Maximize2, Minimize2 } from 'lucide-react';
 import {
     Bell,
     ExternalLink,
@@ -25,7 +24,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { axiosRequest, removeToken, logoutUser } from '@/lib/Tokens';
+import { logoutUser } from '@/lib/Tokens';
 import { useUser } from '@/Store/Zustand';
 
 const languages = [
@@ -81,8 +80,8 @@ const Header = ({ onToggle }: HeaderProps) => {
         return (saved as 'light' | 'dark' | 'auto') || 'light';
     });
     
-    const profileRef = useRef(null);
-    const notificationsRef = useRef(null);
+    const profileRef = useRef<HTMLDivElement>(null);
+    const notificationsRef = useRef<HTMLDivElement>(null);
 
     const applyTheme = (mode: 'light' | 'dark' | 'auto') => {
         setTheme(mode);
@@ -223,7 +222,10 @@ const Header = ({ onToggle }: HeaderProps) => {
                     onClick={FullScreenEkran}
                     title={t('fullscreen')}
                     aria-label={t('fullscreen')}
-                    className="flex size-9 items-center justify-center rounded-xl text-slate-500 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-white cursor-pointer"
+                    className={cn(
+                        "flex size-9 items-center justify-center rounded-xl text-slate-500 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-white cursor-pointer",
+                        fullScreen && "bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400"
+                    )}
                 >
                     <ExternalLink className="size-5" />
                 </button>

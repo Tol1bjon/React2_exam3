@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { axiosRequest, removeToken, logoutUser } from '@/lib/Tokens';
+import { logoutUser } from '@/lib/Tokens';
 import { useUser } from '@/Store/Zustand';
 
 type NavItem = {

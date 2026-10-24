@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/Store/Zustand";
 
-const AddContact = ({ isOpen, onClose }) => {
+const AddContact = ({ isOpen, onClose }: any) => {
   const { t } = useTranslation();
   const addContact = useUser((state: any) => state.addContact);
 

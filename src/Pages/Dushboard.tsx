@@ -17,7 +17,7 @@ const xCoords = [40, 89, 138, 187, 236, 285, 335, 384, 433, 482, 531, 580];
 const Dushboard = () => {
     const { t } = useTranslation();
     const [selectedYear, setSelectedYear] = useState('2026');
-    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [showLent, setShowLent] = useState(true);
     const [showBorrowed, setShowBorrowed] = useState(true);
 

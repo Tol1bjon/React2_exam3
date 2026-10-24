@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import {
     Pencil,
@@ -11,12 +11,11 @@ import {
     LogOut,
 } from 'lucide-react';
 import { useUser } from '@/Store/Zustand';
-import { axiosRequest, removeToken, logoutUser } from '@/lib/Tokens';
+import { logoutUser } from '@/lib/Tokens';
 
 const Profile = () => {
     const updateUser = useUser((state: any) => state.updateUser)
     const { t, i18n } = useTranslation();
-    const navigate = useNavigate();
     const location = useLocation();
 
     const user = useUser((state: any) => state.user);
