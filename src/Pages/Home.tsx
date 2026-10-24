@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Sun,
@@ -23,6 +24,7 @@ type LangCode = 'EN' | 'RU' | 'TJ';
 
 interface LanguageOption {
     code: LangCode;
+    targetLang: string;
     label: string;
     flag: React.ReactNode;
 }
@@ -30,6 +32,7 @@ interface LanguageOption {
 const LANGUAGES: LanguageOption[] = [
     {
         code: 'EN',
+        targetLang: 'en',
         label: 'English',
         flag: (
             <svg viewBox="0 0 28 20" className="h-4 w-6 shrink-0 rounded-[4px] shadow-2xs">
@@ -43,6 +46,7 @@ const LANGUAGES: LanguageOption[] = [
     },
     {
         code: 'RU',
+        targetLang: 'ru',
         label: 'Русский',
         flag: (
             <svg viewBox="0 0 28 20" className="h-4 w-6 shrink-0 rounded-[4px] border border-slate-200/60 shadow-2xs dark:border-slate-700/60">
@@ -54,6 +58,7 @@ const LANGUAGES: LanguageOption[] = [
     },
     {
         code: 'TJ',
+        targetLang: 'tg',
         label: 'Тоҷикӣ',
         flag: (
             <svg viewBox="0 0 28 20" className="h-4 w-6 shrink-0 rounded-[4px] shadow-2xs">
@@ -173,10 +178,22 @@ const itemVariants: any = {
 };
 
 const Home: React.FC = () => {
+    const { t, i18n } = useTranslation();
     const [isDark, setIsDark] = useState(true);
     const [langOpen, setLangOpen] = useState(false);
-    const [selectedLang, setSelectedLang] = useState<LangCode>('EN');
+
+    const getLangCode = (lng: string): LangCode => {
+        if (lng.startsWith('ru')) return 'RU';
+        if (lng.startsWith('tg') || lng.startsWith('tj')) return 'TJ';
+        return 'EN';
+    };
+
+    const [selectedLang, setSelectedLang] = useState<LangCode>(() => getLangCode(i18n.language || 'en'));
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setSelectedLang(getLangCode(i18n.language || 'en'));
+    }, [i18n.language]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -187,6 +204,17 @@ const Home: React.FC = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    const handleSelectLanguage = (item: LanguageOption) => {
+        setSelectedLang(item.code);
+        setLangOpen(false);
+        i18n.changeLanguage(item.targetLang);
+        try {
+            localStorage.setItem('app_language', item.targetLang);
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     return (
         <div className={isDark ? 'dark' : ''}>
@@ -233,11 +261,12 @@ const Home: React.FC = () => {
                                             {LANGUAGES.map((item) => {
                                                 const isSelected = selectedLang === item.code;
                                                 return (
-                                                    <button key={item.code} type="button" onClick={() => {
-                                                            setSelectedLang(item.code);
-                                                            setLangOpen(false);
-                                                        }}
-                                                        className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[14px] transition-colors ${isSelected ? 'bg-slate-100/90 font-semibold text-slate-900 dark:bg-slate-800/80 dark:text-white' : 'font-medium text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/40'}`}>
+                                                    <button
+                                                        key={item.code}
+                                                        type="button"
+                                                        onClick={() => handleSelectLanguage(item)}
+                                                        className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[14px] transition-colors ${isSelected ? 'bg-slate-100/90 font-semibold text-slate-900 dark:bg-slate-800/80 dark:text-white' : 'font-medium text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/40'}`}
+                                                    >
                                                         {item.flag}
                                                         <span className="tracking-tight">{item.label}</span>
                                                         <span className="ml-auto text-xs font-normal text-slate-400 dark:text-slate-500">({item.code})</span>
@@ -265,10 +294,12 @@ const Home: React.FC = () => {
                             </AnimatePresence>
                         </motion.button>
 
-                        <motion.button type="button" whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }} className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200/90 bg-white/90 px-4 py-2 text-xs font-bold text-slate-800 shadow-2xs backdrop-blur-md transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-800/90">
-                            <LogIn className="size-3.5 text-slate-600 dark:text-slate-300" />
-                            <span>Login</span>
-                        </motion.button>
+                        <NavLink to="/login_and_register">
+                            <motion.button type="button" whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }} className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200/90 bg-white/90 px-4 py-2 text-xs font-bold text-slate-800 shadow-2xs backdrop-blur-md transition-all hover:border-slate-300 hover:bg-white hover:shadow-sm dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-800/90">
+                                <LogIn className="size-3.5 text-slate-600 dark:text-slate-300" />
+                                <span>Login</span>
+                            </motion.button>
+                        </NavLink>
                     </div>
                 </motion.header>
 
@@ -281,33 +312,33 @@ const Home: React.FC = () => {
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-75" />
                                 <span className="relative inline-flex size-2 rounded-full bg-blue-500" />
                             </span>
-                            <span>SMART DEBT MANAGEMENT</span>
+                            <span>{t('smartDebtManagement')}</span>
                         </div>
                     </motion.div>
 
                     {/* Заголовок */}
                     <motion.h1 variants={itemVariants} className="max-w-4xl text-4xl leading-[1.12] font-extrabold tracking-tight sm:text-6xl md:text-[68px]">
-                        <span className="block text-[#0F172A] transition-colors dark:text-white">Track Every Debt.</span>
-                        <span className="mt-1 block bg-linear-to-r from-[#2563EB] via-[#4F86F7] to-[#D97706] bg-clip-text text-transparent dark:from-[#3B82F6] dark:via-[#60A5FA] dark:to-[#F59E0B]">Own Your Finances.</span>
+                        <span className="block text-[#0F172A] transition-colors dark:text-white">{t('heroTitle1')}</span>
+                        <span className="mt-1 block bg-linear-to-r from-[#2563EB] via-[#4F86F7] to-[#D97706] bg-clip-text text-transparent dark:from-[#3B82F6] dark:via-[#60A5FA] dark:to-[#F59E0B]">{t('heroTitle2')}</span>
                     </motion.h1>
 
                     {/* Подзаголовок */}
                     <motion.p variants={itemVariants} className="mt-6 max-w-xl text-sm leading-relaxed font-normal text-slate-500 sm:text-base md:text-[17px] md:leading-7 dark:text-slate-400">
-                        A powerful offline-first platform for managing debts, tracking contacts, and keeping your financial records organized — even without internet.
+                        {t('heroSubtitle')}
                     </motion.p>
 
                     {/* Кнопки */}
                     <motion.div variants={itemVariants} className="mt-9 flex w-full max-w-xs flex-col items-center justify-center gap-4 sm:max-w-none sm:flex-row sm:gap-7">
                         <NavLink to="/login_and_register" className="w-full sm:w-auto">
                             <motion.button type="button" whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }} className="group relative flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-[#2563EB] px-7 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_-4px_rgba(37,99,235,0.45)] transition-all hover:bg-[#1D4ED8] hover:shadow-[0_16px_36px_-4px_rgba(37,99,235,0.65)] sm:w-auto dark:bg-[#3B82F6] dark:shadow-[0_12px_34px_-4px_rgba(59,130,246,0.5)] dark:hover:bg-[#2563EB]">
-                                <span>Get Started Free</span>
+                                <span>{t('getStartedFree')}</span>
                                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                             </motion.button>
                         </NavLink>
 
                         <NavLink to="/login_and_register">
                             <motion.button type="button" whileHover={{ x: 2 }} whileTap={{ scale: 0.97 }} className="cursor-pointer py-2 text-sm font-semibold text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                                Create Account
+                                {t('createAccount')}
                             </motion.button>
                         </NavLink>
                     </motion.div>
@@ -325,11 +356,11 @@ const Home: React.FC = () => {
                     <section className="relative z-10 mx-auto mt-28 w-full max-w-6xl px-4 sm:px-6">
                         <div className="flex flex-col items-center text-center">
                             <span className="text-xs font-bold tracking-widest text-[#2563EB] uppercase dark:text-blue-400">
-                                FEATURES
+                                {t('featuresBadge')}
                             </span>
                             <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-                                <span className="text-slate-900 dark:text-white">Everything you need to </span>
-                                <span className="text-slate-400 dark:text-slate-500">manage debts</span>
+                                <span className="text-slate-900 dark:text-white">{t('featuresTitle')}{' '}</span>
+                                <span className="text-slate-400 dark:text-slate-500">{t('featuresSubtitle')}</span>
                             </h2>
                         </div>
 
@@ -373,11 +404,11 @@ const Home: React.FC = () => {
                     <section className="relative z-10 mx-auto mt-28 w-full max-w-6xl px-4 sm:px-6">
                         <div className="flex flex-col items-center text-center">
                             <span className="text-xs font-bold tracking-widest text-[#D97706] uppercase dark:text-amber-400">
-                                HOW IT WORKS
+                                {t('howItWorksBadge')}
                             </span>
                             <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-                                <span className="text-slate-900 dark:text-white">Get started in </span>
-                                <span className="text-slate-400 dark:text-slate-500">four simple steps</span>
+                                <span className="text-slate-900 dark:text-white">{t('howItWorksTitle')}{' '}</span>
+                                <span className="text-slate-400 dark:text-slate-500">{t('howItWorksSubtitle')}</span>
                             </h2>
                         </div>
 
@@ -409,23 +440,27 @@ const Home: React.FC = () => {
                             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent dark:from-blue-500/10" />
 
                             <h2 className="relative z-10 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl md:text-[42px] dark:text-white">
-                                Ready to take control{' '}
-                                <span className="block mt-1 text-slate-400 dark:text-slate-500">of your finances?</span>
+                                {t('readyToTakeControl')}{' '}
+                                <span className="block mt-1 text-slate-400 dark:text-slate-500">{t('ofYourFinances')}</span>
                             </h2>
 
                             <p className="relative z-10 mx-auto mt-4 max-w-md text-sm text-slate-500 sm:text-base dark:text-slate-400">
-                                Join thousands of users who trust DebtBook to keep their financial records clear and organized.
+                                {t('readySubtitle')}
                             </p>
 
                             <div className="relative z-10 mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:gap-4">
-                                <motion.button type="button" whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }} className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2563EB] px-7 py-3.5 text-sm font-bold text-white shadow-[0_10px_25px_-4px_rgba(37,99,235,0.4)] transition-all hover:bg-[#1D4ED8] sm:w-auto dark:bg-[#3B82F6] dark:hover:bg-[#2563EB]">
-                                    <span>Start for Free</span>
-                                    <ArrowRight className="size-4" />
-                                </motion.button>
+                                <NavLink to="/login_and_register" className="w-full sm:w-auto">
+                                    <motion.button type="button" whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }} className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2563EB] px-7 py-3.5 text-sm font-bold text-white shadow-[0_10px_25px_-4px_rgba(37,99,235,0.4)] transition-all hover:bg-[#1D4ED8] sm:w-auto dark:bg-[#3B82F6] dark:hover:bg-[#2563EB]">
+                                        <span>{t('startForFree')}</span>
+                                        <ArrowRight className="size-4" />
+                                    </motion.button>
+                                </NavLink>
 
-                                <motion.button type="button" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex w-full cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white/80 px-7 py-3.5 text-sm font-semibold text-slate-700 shadow-2xs transition-all hover:bg-slate-50 hover:text-slate-900 sm:w-auto dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white">
-                                    Sign In
-                                </motion.button>
+                                <NavLink to="/login_and_register" className="w-full sm:w-auto">
+                                    <motion.button type="button" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex w-full cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white/80 px-7 py-3.5 text-sm font-semibold text-slate-700 shadow-2xs transition-all hover:bg-slate-50 hover:text-slate-900 sm:w-auto dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white">
+                                        {t('signIn')}
+                                    </motion.button>
+                                </NavLink>
                             </div>
                         </motion.div>
                     </section>
