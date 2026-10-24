@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Фильтр для легкой текстуры краев ямы -->
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+
+  <!-- Зеленая яма / портал на земле -->
+  <g transform="translate(0, 10)">
+    <ellipse cx="195" cy="405" rx="75" ry="28" fill="#5cd6a9" filter="url(#rough)" />
+    <ellipse cx="195" cy="405" rx="58" ry="20" fill="#47b88e" filter="url(#rough)" />
+    <ellipse cx="195" cy="405" rx="38" ry="13" fill="#2d8a67" filter="url(#rough)" />
+    
+    <!-- Линии вокруг ямы -->
+    <line x1="150" y1="382" x2="162" y2="395" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="168" y1="376" x2="174" y2="391" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="196" y1="375" x2="195" y2="390" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Оранжевые ботинки -->
+  <!-- Левый ботинок (передний) -->
+  <path d="M 278 360 L 278 398 L 248 412 C 240 415 242 420 252 420 L 285 415 L 285 405 L 290 405 L 290 415 L 293 415 L 293 360 Z" fill="#ff3b00" />
+  <path d="M 263 402 C 258 396 265 392 268 400 C 272 394 278 398 270 403" fill="none" stroke="#1f2421" stroke-width="1.2" />
+  
+  <!-- Правый ботинок (задний) -->
+  <path d="M 358 355 L 358 395 L 328 408 C 320 411 322 416 332 416 L 365 411 L 365 401 L 370 401 L 370 411 L 373 411 L 373 355 Z" fill="#ff3b00" />
+  <path d="M 343 398 C 338 392 345 388 348 396 C 352 390 358 394 350 399" fill="none" stroke="#1f2421" stroke-width="1.2" />
+
+  <!-- Синие брюки -->
+  <g>
+    <!-- Правая штанина (дальняя) -->
+    <path d="M 310 140 L 348 130 L 392 345 C 394 355 382 362 365 362 L 345 362 C 335 362 332 355 330 345 L 305 220 Z" fill="#3a75ff" />
+    <!-- Левая штанина (ближняя) -->
+    <path d="M 285 155 L 338 135 L 318 355 C 316 368 302 372 280 372 L 260 372 C 250 372 246 364 248 352 L 278 190 Z" fill="#3a75ff" />
+    
+    <!-- Линии складок и швов на брюках -->
+    <path d="M 316 185 L 324 225 L 362 360" fill="none" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 320 205 L 302 370" fill="none" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M 280 315 L 275 358" fill="none" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M 362 310 L 372 345" fill="none" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M 326 160 C 326 170 332 175 335 178" fill="none" stroke="#1f2421" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Голова и шея -->
+  <g>
+    <path d="M 215 210 L 185 235 C 176 242 175 254 182 260 C 189 266 202 258 212 248 L 230 225 Z" fill="#ff9eb5" />
+    <!-- Волосы/шапочка на макушке -->
+    <path d="M 180 240 C 175 245 176 256 183 260 C 186 262 190 260 190 257 C 184 257 181 251 183 246 C 185 242 189 243 188 240 C 187 237 182 238 180 240 Z" fill="#1f2421" />
+    <!-- Черты лица (глаз, нос, ухо) -->
+    <path d="M 193 250 C 195 252 198 251 198 248" fill="none" stroke="#1f2421" stroke-width="1.3" stroke-linecap="round" />
+    <circle cx="192" cy="245" r="1.3" fill="#1f2421" />
+    <path d="M 203 235 C 200 232 196 235 199 239" fill="none" stroke="#1f2421" stroke-width="1.3" stroke-linecap="round" />
+    <!-- Румянец/тень на щеке -->
+    <circle cx="198" cy="244" r="3.5" fill="#f27d9b" opacity="0.6" />
+  </g>
+
+  <!-- Лупа и рука -->
+  <g>
+    <!-- Ручка лупы -->
+    <line x1="210" y1="292" x2="238" y2="318" stroke="#1c5cff" stroke-width="7" stroke-linecap="round" />
+    <!-- Ободок лупы -->
+    <ellipse cx="198" cy="282" rx="18" ry="14" transform="rotate(-10 198 282)" fill="#5ce1e6" stroke="#2b7fff" stroke-width="6" />
+    <!-- Блик на стекле -->
+    <path d="M 188 276 C 190 272 196 271 202 273" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+    
+    <!-- Кисть руки (держит ручку) -->
+    <path d="M 245 300 L 222 302 C 216 302 215 307 220 308 L 214 310 C 209 311 210 316 216 316 L 214 318 C 210 320 212 324 218 323 L 235 320 L 248 312 Z" fill="#ff9eb5" />
+    <path d="M 220 308 L 228 308 M 216 316 L 226 315" fill="none" stroke="#e07b94" stroke-width="1" stroke-linecap="round" />
+  </g>
+
+  <!-- Пушистый оранжевый свитер -->
+  <g>
+    <path d="M 202 225 
+             C 192 222 182 212 180 205 
+             L 196 207 
+             C 184 192 178 175 180 165 
+             L 198 174 
+             C 194 152 198 132 204 122 
+             L 215 138 
+             C 216 112 224 92 232 82 
+             L 240 104 
+             C 248 82 262 66 274 60 
+             L 272 86 
+             C 288 70 308 64 320 65 
+             L 308 86 
+             C 328 78 350 82 360 88 
+             L 344 102 
+             C 362 104 378 114 384 124 
+             L 360 132 
+             C 370 142 374 156 368 166 
+             L 335 162 
+             C 320 175 305 182 292 190 
+             C 312 205 322 228 318 242 
+             L 304 234 
+             C 312 252 310 272 302 284 
+             L 290 274 
+             C 294 290 288 308 278 318 
+             L 270 304 
+             C 268 318 258 328 246 332 
+             L 234 296 
+             L 246 292 
+             C 240 280 242 266 248 258 
+             L 262 266 
+             C 258 250 262 235 268 225 
+             C 254 232 238 235 228 232 
+             L 234 220 
+             C 222 228 210 228 202 225 Z" fill="#ff3b00" />
+
+    <!-- Декоративные черные зигзаги (текстура меха на свитере) -->
+    <!-- Верхний левый зигзаг -->
+    <path d="M 232 115 L 242 135 L 245 122 L 254 138" fill="none" stroke="#1f2421" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Нижний левый зигзаг (у ворота) -->
+    <path d="M 218 202 L 222 184 L 228 198 L 236 185" fill="none" stroke="#1f2421" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Центральный изгиб (отделяет руку от спины) -->
+    <path d="M 265 152 C 282 150 295 152 298 158 C 290 166 284 172 288 178 C 295 182 308 188 312 198" fill="none" stroke="#1f2421" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Зигзаг на рукаве -->
+    <path d="M 295 210 L 312 222 L 298 228 L 310 242" fill="none" stroke="#1f2421" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>
